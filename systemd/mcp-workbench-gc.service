@@ -1,0 +1,16 @@
+[Unit]
+Description=MCP Workbench artifact GC (cache, events, leftover clones)
+After=network.target
+
+[Service]
+Type=oneshot
+User=mcpwork
+Group=mcpwork
+WorkingDirectory=/opt/mcp-workbench
+EnvironmentFile=/etc/mcp-workbench.env
+ExecStart=/opt/mcp-workbench/.venv/bin/python -c "from src.store.db import init_db, gc_artifacts; init_db(); print(gc_artifacts())"
+Nice=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/mcp-workbench

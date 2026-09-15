@@ -1,0 +1,11 @@
+{
+  "name": "mcp-workbench",
+  "private": true,
+  "description": "Root workspace. The Vite app lives in web/ (see web/package.json).",
+  "workspaces": ["web"],
+  "scripts": {
+    "dev": "npm --prefix web run dev",
+    "build": "npm --prefix web run build",
+    "preview": "npm --prefix web run preview"
+  }
+}

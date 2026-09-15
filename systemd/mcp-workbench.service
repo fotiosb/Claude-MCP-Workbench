@@ -1,0 +1,24 @@
+[Unit]
+Description=MCP Workbench (FastAPI + Uvicorn, one worker)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mcpwork
+Group=mcpwork
+WorkingDirectory=/opt/mcp-workbench
+EnvironmentFile=/etc/mcp-workbench.env
+Environment=GIT_TERMINAL_PROMPT=0
+Environment=GIT_LFS_SKIP_SMUDGE=1
+ExecStart=/opt/mcp-workbench/.venv/bin/uvicorn src.host.main:app --host 127.0.0.1 --port 8000 --workers 1
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/mcp-workbench
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Presenter notes, slide, and NDI">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14120f"/>
+      <stop offset="1" stop-color="#1c1914"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg3)"/>
+  <text x="24" y="28" fill="#b8a888" font-family="ui-monospace,monospace" font-size="11">SLIDE  ·  NOTES  ·  NDI OUT</text>
+  <!-- slide -->
+  <rect x="36" y="52" width="300" height="190" rx="6" fill="#221e18" stroke="#5a4e3a"/>
+  <rect x="56" y="72" width="260" height="14" rx="2" fill="#3a3428"/>
+  <rect x="56" y="98" width="180" height="8" rx="2" fill="#2e2a22"/>
+  <rect x="56" y="116" width="220" height="8" rx="2" fill="#2e2a22"/>
+  <rect x="56" y="148" width="110" height="70" rx="3" fill="#2a261e" stroke="#4a4030"/>
+  <rect x="180" y="148" width="110" height="70" rx="3" fill="#2a261e" stroke="#4a4030"/>
+  <text x="72" y="188" fill="#d4c4a0" font-size="11" font-family="system-ui,sans-serif">Deck</text>
+  <text x="196" y="188" fill="#d4c4a0" font-size="11" font-family="system-ui,sans-serif">Live</text>
+  <!-- notes -->
+  <rect x="356" y="52" width="248" height="190" rx="6" fill="#1a1814" stroke="#4a4030"/>
+  <text x="372" y="78" fill="#c4b494" font-size="12" font-family="system-ui,sans-serif">Presenter notes</text>
+  <rect x="372" y="92" width="200" height="6" fill="#3a3428"/>
+  <rect x="372" y="108" width="176" height="6" fill="#2e2a22"/>
+  <rect x="372" y="124" width="188" height="6" fill="#2e2a22"/>
+  <rect x="372" y="140" width="150" height="6" fill="#2e2a22"/>
+  <rect x="372" y="168" width="80" height="18" rx="3" fill="#3d3424" stroke="#6a5a3a"/>
+  <text x="384" y="181" fill="#e0d2b0" font-size="10" font-family="ui-monospace,monospace">next</text>
+  <!-- NDI -->
+  <rect x="36" y="260" width="568" height="72" rx="6" fill="#1a1814" stroke="#4a4030"/>
+  <circle cx="72" cy="296" r="14" fill="none" stroke="#c4a060" stroke-width="2"/>
+  <text x="66" y="300" fill="#c4a060" font-size="10" font-family="ui-monospace,monospace">N</text>
+  <text x="100" y="292" fill="#d4c4a0" font-size="13" font-family="system-ui,sans-serif">NDI output</text>
+  <text x="100" y="312" fill="#8a7a60" font-size="11" font-family="ui-monospace,monospace">notes + slide  →  LAN</text>
+  <rect x="400" y="280" width="180" height="32" rx="4" fill="#2a261e" stroke="#5a4e3a"/>
+  <text x="416" y="300" fill="#c4b494" font-size="11" font-family="ui-monospace,monospace">Chrome ext · Node</text>
+</svg>
