@@ -136,6 +136,107 @@ Official `mcp` SDK is preferred for tools / resources / prompts when importable;
 - Completions, resource subscriptions, sampling
 - Multi-skill routing beyond `github_repo → repo-audit`
 
+
+---
+
+## Try `/mcp` from the command line
+
+`/mcp` is **Streamable HTTP JSON-RPC**, not a webpage. A browser GET usually only shows keep-alive `ping` events. Use **POST** with `Content-Type: application/json`.
+
+Base URL in the examples: `https://mcp.fotios.org/mcp` (local: `http://127.0.0.1:8000/mcp`).
+
+### 1) `initialize`
+
+Handshake: negotiate protocol version and learn server capabilities.
+
+**Returns:** `result.protocolVersion`, `serverInfo`, `capabilities` (tools/resources/prompts + Tasks extension), and short `instructions`.
+
+**Linux / macOS (`curl`):**
+
+```bash
+curl -sS https://mcp.fotios.org/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2026-07-28","capabilities":{},"clientInfo":{"name":"curl-demo","version":"1"}}}'
+```
+
+**Windows PowerShell (`Invoke-RestMethod`):**
+
+```powershell
+Invoke-RestMethod https://mcp.fotios.org/mcp -Method Post -ContentType 'application/json' -Body '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2026-07-28","capabilities":{},"clientInfo":{"name":"curl-demo","version":"1"}}}' | ConvertTo-Json -Depth 20
+```
+
+### 2) `tools/list`
+
+List every MCP tool this host exposes.
+
+**Returns:** `result.tools[]` with `name`, `description`, and `inputSchema` for each tool (classify, resolve, scanners, `start_repo_audit`, …).
+
+**Linux / macOS:**
+
+```bash
+curl -sS https://mcp.fotios.org/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
+```
+
+**Windows PowerShell:**
+
+```powershell
+Invoke-RestMethod https://mcp.fotios.org/mcp -Method Post -ContentType 'application/json' -Body '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' | ConvertTo-Json -Depth 20
+```
+
+### 3) `tools/call` → `classify_url`
+
+Ask whether a URL is an accepted public GitHub repo (and which skill it maps to).
+
+**Returns:** classification payload (`accepted`, `kind`, `skill`, `reason`, and when accepted `owner` / `repo` / normalized URLs). Rejects gist/issues/blob/GitLab/SSH with a precise reason.
+
+**Linux / macOS:**
+
+```bash
+curl -sS https://mcp.fotios.org/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"classify_url","arguments":{"url":"https://github.com/fotiosb/MacPresenterView"}}}'
+```
+
+**Windows PowerShell:**
+
+```powershell
+Invoke-RestMethod https://mcp.fotios.org/mcp -Method Post -ContentType 'application/json' -Body '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"classify_url","arguments":{"url":"https://github.com/fotiosb/MacPresenterView"}}}' | ConvertTo-Json -Depth 20
+```
+
+### 4) `tools/call` → `start_repo_audit`
+
+Start a long-running **repo-audit Task** (shallow clone + scans + brief). Subject to the same IP caps as the web UI.
+
+**Returns:** a Task / run handle (id fields depend on the fallback shape — typically a task/run id you can poll). Does **not** wait for the full audit inline.
+
+**Linux / macOS:**
+
+```bash
+curl -sS https://mcp.fotios.org/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"start_repo_audit","arguments":{"url":"https://github.com/fotiosb/MacPresenterView"}}}'
+```
+
+**Windows PowerShell:**
+
+```powershell
+Invoke-RestMethod https://mcp.fotios.org/mcp -Method Post -ContentType 'application/json' -Body '{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"start_repo_audit","arguments":{"url":"https://github.com/fotiosb/MacPresenterView"}}}' | ConvertTo-Json -Depth 20
+```
+
+### 5) `tasks/get`
+
+Poll Task status until `completed` / `failed` / `cancelled` (or `input_required`).
+
+**Returns:** task state (`working`, `input_required`, `completed`, …), progress/stage fields when available, and result refs when done. Replace `PASTE_TASK_OR_RUN_ID_HERE` with the id from step 4.
+
+**Linux / macOS:**
+
+```bash
+curl -sS https://mcp.fotios.org/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":5,"method":"tasks/get","params":{"taskId":"PASTE_TASK_OR_RUN_ID_HERE"}}'
+```
+
+**Windows PowerShell:**
+
+```powershell
+Invoke-RestMethod https://mcp.fotios.org/mcp -Method Post -ContentType 'application/json' -Body '{"jsonrpc":"2.0","id":5,"method":"tasks/get","params":{"taskId":"PASTE_TASK_OR_RUN_ID_HERE"}}' | ConvertTo-Json -Depth 20
+```
+
+**Note:** On Windows, Prefer `Invoke-RestMethod` (or `curl.exe --data-binary @file.json`). Inline `curl.exe -d "..."` is easy for PowerShell to mangle, which surfaces as MCP `-32700 Parse error`.
+
 ---
 
 ## Safety model

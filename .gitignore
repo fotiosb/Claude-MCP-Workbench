@@ -14,6 +14,4 @@ data/**/*.pdf
 .DS_Store
 Thumbs.db
 sample_report.pdf
-
-gh-auth-login.log*
-*.log
+mcp-*.json
